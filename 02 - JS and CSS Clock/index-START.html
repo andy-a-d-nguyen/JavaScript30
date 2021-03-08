@@ -62,13 +62,38 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: 100%; /* Put the pivot point on the right most part (right corner) */
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1); /* Hand wiggling as it moves */
     }
 
   </style>
 
   <script>
+    const secondHand = document.querySelector('.second-hand'); // grab the first element with .second-hand class
+    const minHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
 
+    function setDate() {
+      const now = new Date(); // get the current Date
+      const seconds = now.getSeconds(); // get the current second
+      const secondsDegrees = (seconds / 60) * 360 + 90; // convert seconds into degrees on a circular clock
+                                                        // add 90 due to existing transform: rotate(90deg) to have hand be in correct place
+      secondHand.style.transform = `rotate(${secondsDegrees}deg)`; // access the style property and set the transform property
+      // console.log(seconds);
 
+      const mins = now.getMinutes();
+      const minsDegrees = (mins / 60) * 360 + 90;
+      minHand.style.transform = `rotate(${minsDegrees}deg)`;
+      // console.log(mins);
+
+      const hours = now.getHours(); // get current hour
+      const hoursDegrees = (hours / 60) * 360 + 90;
+      hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+      // console.log(hours);
+    }
+    setInterval(setDate, 1000); // run setDate every 1000 ms
   </script>
 </body>
 </html>
